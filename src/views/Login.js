@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 
 // components
-import logo from "../../assets/logo-title-negro.png";
+import logo from "../../assets/images/logo-title-black.png";
 import RegisterForm from "../components/Login/RegisterForm";
 
 // styles
