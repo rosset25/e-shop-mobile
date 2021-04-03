@@ -2,5 +2,8 @@
   "name": "nombre",
   "surname": "apellidos",
   "email": "email",
-  "password": "contraseña"
+  "password": "contraseña",
+  "confirmPassword": "confirmar contraseña",
+  "register": "Registrarse",
+  "initSession": "Iniciar sesión"
 }

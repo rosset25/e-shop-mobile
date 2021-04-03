@@ -1,5 +1,5 @@
 {
-  "addBtn" : "Add",
-  "backBtn": "Back",
-  "cancelBtn": "Cancel"
+  "add" : "Add",
+  "back": "Back",
+  "cancel": "Cancel"
 }
