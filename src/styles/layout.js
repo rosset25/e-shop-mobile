@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 
 const layoutStyle = StyleSheet.create({
-  container: {
+  mainContainer: {
     flex: 1,
     justifyContent: "center",
     padding: 20,

@@ -1,3 +1,5 @@
-import layoutStyle from './layout';
+import colors from "./colors";
+import layoutStyle from "./layout";
+import formStyles from "./form";
 
-export { layoutStyle };
+export { colors, layoutStyle, formStyles };
