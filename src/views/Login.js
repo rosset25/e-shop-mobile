@@ -1,8 +1,13 @@
 // react
 import React, { useState } from "react";
-
-// elements
-import { StyleSheet, View, Text, Image } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import {} from "react-native-paper";
 
 // styles
@@ -15,10 +20,23 @@ import RegisterForm from "../components/Login/RegisterForm";
 export default function Login() {
   const [showLogin, setShowLogin] = useState(false);
 
+  // handles
+  const handleChangeForm = () => {
+    setShowLogin(!showLogin);
+  };
+
   return (
     <View style={layoutStyle.mainContainer}>
       <Image style={styles.logo} source={logo} />
-      {showLogin ? <Text>Form login</Text> : <RegisterForm />}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"} // FIXME: not working for now in Android
+      >
+        {showLogin ? (
+          <Text>Form login</Text>
+        ) : (
+          <RegisterForm changeForm={handleChangeForm} />
+        )}
+      </KeyboardAvoidingView>
     </View>
   );
 }
@@ -26,8 +44,8 @@ export default function Login() {
 const styles = StyleSheet.create({
   logo: {
     width: "100%",
-    //height: 80,
+    height: 85,
     resizeMode: "contain",
-    marginBottom: 40,
+    marginBottom: 10,
   },
 });

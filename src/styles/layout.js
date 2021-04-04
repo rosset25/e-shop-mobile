@@ -5,6 +5,7 @@ const layoutStyle = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 20,
+    marginTop: 20,
   },
   containerRow: {
     flexDirection: "row",
