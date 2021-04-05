@@ -28,15 +28,18 @@ export default function Login() {
   return (
     <View style={layoutStyle.mainContainer}>
       <Image style={styles.logo} source={logo} />
+      {/* // FIXME: not working properly in Android (React Native open bug)
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"} // FIXME: not working for now in Android
-      >
-        {showLogin ? (
-          <Text>Form login</Text>
-        ) : (
-          <RegisterForm changeForm={handleChangeForm} />
-        )}
-      </KeyboardAvoidingView>
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"} 
+        enabled={Platform.OS === "ios" ? true : false}
+      >*/}
+      {showLogin ? (
+        <Text onPress={handleChangeForm}>Form login</Text>
+      ) : (
+        <RegisterForm changeForm={handleChangeForm} />
+      )}
+      {/*</KeyboardAvoidingView>*/}
     </View>
   );
 }
@@ -46,6 +49,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 85,
     resizeMode: "contain",
+    //marginTop: 25,
     marginBottom: 10,
   },
 });

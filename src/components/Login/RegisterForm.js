@@ -1,7 +1,7 @@
 // react
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { FlatList, View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -19,35 +19,47 @@ export default function RegisterForm(props) {
       (obj, elem) => ({ ...obj, [elem.key]: "" }),
       {}
     ),
+    validationSchema: Yup.object(validationSchema()),
+    onSubmit: (formData) => {
+      console.log("regitro completado");
+      console.log(formData);
+    },
   });
-
-  const example = registerInputs.reduce(
-    (obj, elem) => ({ ...obj, [elem.key]: "" }),
-    {}
-  );
 
   return (
     <View>
-      {/** render input fields */}
-      <FlatList
-        data={registerInputs}
-        renderItem={({ item }) => (
-          <TextInput
-            key={item.key}
-            label={t(item.value)}
-            style={formStyles.input}
-            theme={themes.inputTheme}
-            required
-            secureTextEntry={item.key.includes("password")}
-          />
-        )}
-      />
+      {registerInputs.map((item) => {
+        return (
+          <View>
+            <TextInput
+              key={item.key}
+              label={t(item.value)}
+              style={formStyles.input}
+              theme={themes.inputTheme}
+              onChangeText={(value) => {
+                formik.setFieldValue(item.key, value);
+              }}
+              value={formik.values[item.key]}
+              error={formik.errors[item.key]}
+              secureTextEntry={item.key.includes("password")}
+              errorText={formik.errors[item.key]}
+            ></TextInput>
+            {formik.errors[item.key] &&
+              (item.key.includes("password") || item.key === "email") && (
+                <Text style={{ fontSize: 10, color: "red", marginBottom: -10 }}>
+                  {formik.errors[item.key]}
+                </Text>
+              )}
+          </View>
+        );
+      })}
 
       <View style={styles.containerButtons}>
         <Button
           mode="contained"
           style={formStyles.btnSuccess}
           labelStyle={formStyles.btnSuccessLabel}
+          onPress={formik.handleSubmit}
         >
           {t("login:register")}
         </Button>
@@ -60,9 +72,6 @@ export default function RegisterForm(props) {
           {t("login:initSession")}
         </Button>
       </View>
-      {/*<Button mode="contained" style={formStyles.btnLogin}>
-        <Text style={formStyles.btnBlackText}>{t("login:initSession")}</Text>
-        </Button>*/}
     </View>
   );
 }
@@ -70,9 +79,8 @@ export default function RegisterForm(props) {
 const styles = StyleSheet.create({
   containerButtons: {
     flexDirection: "column",
-    //justifyContent: "space-between",
     width: "100%",
-    marginTop: 10,
+    marginTop: 25,
   },
 });
 
@@ -84,4 +92,19 @@ function getRegisterInputs() {
     { key: "password", value: "login:password" },
     { key: "confpassword", value: "login:confirmPassword" },
   ];
+}
+
+function validationSchema() {
+  const [t] = useTranslation(["login"]);
+  let min = 8;
+  return {
+    email: Yup.string().email(t("incorrectEmail")).required(true),
+    name: Yup.string().required(true),
+    password: Yup.string()
+      .required(true)
+      .min(min, t("minCharacters", { count: min })),
+    confpassword: Yup.string()
+      .required(true)
+      .oneOf([Yup.ref("password")], t("equalPassword")),
+  };
 }

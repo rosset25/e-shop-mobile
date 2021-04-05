@@ -2,8 +2,11 @@
   "name": "nombre",
   "surname": "apellidos",
   "email": "email",
+  "incorrectEmail": "Email incorrecto",
   "password": "contraseña",
   "confirmPassword": "confirmar contraseña",
+  "minCharacters":"La contraseña debe tener más de {{count}} carácteres",
+  "equalPassword": "Las contraseñas deben ser iguales",
   "register": "Registrarse",
   "initSession": "Iniciar sesión"
 }

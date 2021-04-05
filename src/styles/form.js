@@ -3,7 +3,7 @@ import colors from "./colors";
 
 const formStyles = StyleSheet.create({
   input: {
-    marginBottom: 20,
+    marginTop: 20,
     backgroundColor: colors.secondary,
   },
   btnSuccess: {
