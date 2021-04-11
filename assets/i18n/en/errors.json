@@ -1,0 +1,4 @@
+{ 
+  "errorDefault": "Something went wrong. Try again later.",
+  "errorEmail": "This email already exists."
+}

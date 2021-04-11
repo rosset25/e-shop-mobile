@@ -13,7 +13,7 @@ import {} from "react-native-paper";
 // styles
 import { layoutStyle } from "../styles";
 
-// components
+// other imports
 import logo from "../../assets/images/logo-title-black.png";
 import RegisterForm from "../components/Login/RegisterForm";
 

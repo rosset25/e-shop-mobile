@@ -1,5 +1,5 @@
 // react
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { View, StyleSheet, Text } from "react-native";
 import { TextInput, Button } from "react-native-paper";
@@ -9,9 +9,15 @@ import * as Yup from "yup";
 // styles
 import { formStyles, themes } from "../../styles";
 
+// other imports
+import { UserService } from "../../services";
+
 export default function RegisterForm(props) {
   const { changeForm } = props;
-  const [t, i18n] = useTranslation(["login", "global"]);
+
+  const [t] = useTranslation(["login", "global", "errors"]);
+  const [loading, setLoading] = useState(false);
+
   const registerInputs = getRegisterInputs();
   const formik = useFormik({
     // use same keys of registerInputs
@@ -20,9 +26,20 @@ export default function RegisterForm(props) {
       {}
     ),
     validationSchema: Yup.object(validationSchema()),
-    onSubmit: (formData) => {
-      console.log("regitro completado");
-      console.log(formData);
+    onSubmit: async (formData) => {
+      try {
+        setLoading(true);
+        const response = await UserService.registerUser(formData);
+        if (response.status === 200) {
+          changeForm();
+        } else {
+          console.log(response.error);
+        }
+      } catch (error) {
+        let logError = t("errors:errorDefault");
+        console.log(logError);
+      }
+      setLoading(false);
     },
   });
 
@@ -30,7 +47,7 @@ export default function RegisterForm(props) {
     <View>
       {registerInputs.map((item) => {
         return (
-          <View>
+          <View key={"V" + item.key}>
             <TextInput
               key={item.key}
               label={t(item.value)}
@@ -41,12 +58,13 @@ export default function RegisterForm(props) {
               }}
               value={formik.values[item.key]}
               error={formik.errors[item.key]}
-              secureTextEntry={item.key.includes("password")}
+              secureTextEntry={item.key.toLowerCase().includes("password")}
               errorText={formik.errors[item.key]}
             ></TextInput>
             {formik.errors[item.key] &&
-              (item.key.includes("password") || item.key === "email") && (
-                <Text style={{ fontSize: 10, color: "red", marginBottom: -10 }}>
+              (item.key.toLowerCase().includes("password") ||
+                item.key === "email") && (
+                <Text style={{ fontSize: 10, color: "red", marginBottom: -12 }}>
                   {formik.errors[item.key]}
                 </Text>
               )}
@@ -60,6 +78,7 @@ export default function RegisterForm(props) {
           style={formStyles.btnSuccess}
           labelStyle={formStyles.btnSuccessLabel}
           onPress={formik.handleSubmit}
+          loading={loading} // TODO: display a spinner in all view
         >
           {t("login:register")}
         </Button>
@@ -76,6 +95,7 @@ export default function RegisterForm(props) {
   );
 }
 
+// custom styles
 const styles = StyleSheet.create({
   containerButtons: {
     flexDirection: "column",
@@ -84,26 +104,28 @@ const styles = StyleSheet.create({
   },
 });
 
+// functions
 function getRegisterInputs() {
   return [
     { key: "email", value: "login:email" },
     { key: "name", value: "login:name" },
     //{ key: "surname", value: "login:surname" },
     { key: "password", value: "login:password" },
-    { key: "confpassword", value: "login:confirmPassword" },
+    { key: "confirmPassword", value: "login:confirmPassword" },
   ];
 }
 
+// keys must be the same as above
 function validationSchema() {
   const [t] = useTranslation(["login"]);
-  let min = 8;
+  let min = 2;
   return {
     email: Yup.string().email(t("incorrectEmail")).required(true),
     name: Yup.string().required(true),
     password: Yup.string()
       .required(true)
       .min(min, t("minCharacters", { count: min })),
-    confpassword: Yup.string()
+    confirmPassword: Yup.string()
       .required(true)
       .oneOf([Yup.ref("password")], t("equalPassword")),
   };

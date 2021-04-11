@@ -4,9 +4,11 @@ import i18next from "i18next";
 // Español
 import global_es from "./es/global.json";
 import login_es from "./es/login.json";
+import errors_es from "./es/errors.json";
 // English
 import global_en from "./en/global.json";
-import login_en from "./es/login.json";
+import login_en from "./en/login.json";
+import errors_en from "./en/errors.json";
 
 const locale =
   Platform.OS === "ios"
@@ -33,10 +35,12 @@ i18next.init({
     es: {
       global: global_es,
       login: login_es,
+      errors: errors_es,
     },
     en: {
       global: global_en,
       login: login_en,
+      errors: errors_en,
     },
   },
 });
