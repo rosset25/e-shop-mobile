@@ -1,8 +1,14 @@
 // react
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View, StyleSheet, Text } from "react-native";
-import { TextInput, Button } from "react-native-paper";
+import {
+  TextInput,
+  Button,
+  Dialog,
+  Portal,
+  Paragraph,
+} from "react-native-paper";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -17,6 +23,8 @@ export default function RegisterForm(props) {
 
   const [t] = useTranslation(["login", "global", "errors"]);
   const [loading, setLoading] = useState(false);
+  const [errorDialog, setErrorDialog] = useState(false);
+  const [errorDialogMessage, setErrorDialogMessage] = useState();
 
   const registerInputs = getRegisterInputs();
   const formik = useFormik({
@@ -27,6 +35,7 @@ export default function RegisterForm(props) {
     ),
     validationSchema: Yup.object(validationSchema()),
     onSubmit: async (formData) => {
+      let errorMessage = "";
       try {
         setLoading(true);
         const response = await UserService.registerUser(formData);
@@ -34,14 +43,22 @@ export default function RegisterForm(props) {
           changeForm();
         } else {
           console.log(response.error);
+          errorMessage = response.error;
         }
       } catch (error) {
-        let logError = t("errors:errorDefault");
+        errorMessage = t("errors:errorDefault");
         console.log(logError);
       }
+      setErrorDialogMessage(errorMessage);
+      setErrorDialog(true);
       setLoading(false);
     },
   });
+
+  // handles
+  const handleHideDialog = () => {
+    setErrorDialog(false);
+  };
 
   return (
     <View>
@@ -72,13 +89,36 @@ export default function RegisterForm(props) {
         );
       })}
 
+      <Portal>
+        <Dialog
+          visible={errorDialog}
+          onDismiss={handleHideDialog}
+          style={styles.dialog}
+        >
+          <Dialog.Title>{t("errors:errorTitle")}</Dialog.Title>
+          <Dialog.Content>
+            <Paragraph>{errorDialogMessage}</Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions style={styles.dialogActions}>
+            <Button
+              mode="contained"
+              style={formStyles.btnSuccess}
+              labelStyle={formStyles.btnSuccessLabel}
+              onPress={handleHideDialog}
+            >
+              {t("global:ok")}
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+
       <View style={styles.containerButtons}>
         <Button
           mode="contained"
           style={formStyles.btnSuccess}
           labelStyle={formStyles.btnSuccessLabel}
           onPress={formik.handleSubmit}
-          loading={loading} // TODO: display a spinner in all view
+          loading={loading}
         >
           {t("login:register")}
         </Button>
@@ -101,6 +141,12 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     width: "100%",
     marginTop: 25,
+  },
+  dialogActions: {
+    marginRight: "5%",
+  },
+  dialog: {
+    padding: 5,
   },
 });
 

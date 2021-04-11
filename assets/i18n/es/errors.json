@@ -1,4 +1,5 @@
 { 
+  "errorTitle": "Error",
   "errorDefault": "¡Ops! Algo salió mal, por favor inténtalo más tarde.",
   "errorEmail": "Este email ya está en uso."
 }
