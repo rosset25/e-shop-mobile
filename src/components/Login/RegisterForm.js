@@ -2,21 +2,17 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View, StyleSheet, Text } from "react-native";
-import {
-  TextInput,
-  Button,
-  Dialog,
-  Portal,
-  Paragraph,
-} from "react-native-paper";
+import { TextInput, Button } from "react-native-paper";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
 // styles
-import { formStyles, themes } from "../../styles";
+import { formStyles, layoutStyle, themes } from "../../styles";
 
 // other imports
 import { UserService } from "../../services";
+import ErrorDialog from "../custom/ErrorDialog";
+import LoginButtons from "./components/LoginButtons";
 
 export default function RegisterForm(props) {
   const { changeForm } = props;
@@ -55,11 +51,6 @@ export default function RegisterForm(props) {
     },
   });
 
-  // handles
-  const handleHideDialog = () => {
-    setErrorDialog(false);
-  };
-
   return (
     <View>
       {registerInputs.map((item) => {
@@ -89,66 +80,25 @@ export default function RegisterForm(props) {
         );
       })}
 
-      <Portal>
-        <Dialog
-          visible={errorDialog}
-          onDismiss={handleHideDialog}
-          style={styles.dialog}
-        >
-          <Dialog.Title>{t("errors:errorTitle")}</Dialog.Title>
-          <Dialog.Content>
-            <Paragraph>{errorDialogMessage}</Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions style={styles.dialogActions}>
-            <Button
-              mode="contained"
-              style={formStyles.btnSuccess}
-              labelStyle={formStyles.btnSuccessLabel}
-              onPress={handleHideDialog}
-            >
-              {t("global:ok")}
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+      <ErrorDialog
+        text={errorDialogMessage}
+        display={errorDialog}
+        setDisplay={setErrorDialog}
+      ></ErrorDialog>
 
-      <View style={styles.containerButtons}>
-        <Button
-          mode="contained"
-          style={formStyles.btnSuccess}
-          labelStyle={formStyles.btnSuccessLabel}
-          onPress={formik.handleSubmit}
-          loading={loading}
-        >
-          {t("login:register")}
-        </Button>
-        <Button
-          mode="outlined"
-          style={formStyles.btnOutlined}
-          labelStyle={formStyles.btnOutlinedLabel}
-          onPress={changeForm}
-        >
-          {t("login:initSession")}
-        </Button>
-      </View>
+      <LoginButtons
+        formik={formik}
+        loading={loading}
+        containedText={t("login:register")}
+        outlinedText={t("login:initSession")}
+        changeForm={changeForm}
+      />
     </View>
   );
 }
 
 // custom styles
-const styles = StyleSheet.create({
-  containerButtons: {
-    flexDirection: "column",
-    width: "100%",
-    marginTop: 25,
-  },
-  dialogActions: {
-    marginRight: "5%",
-  },
-  dialog: {
-    padding: 5,
-  },
-});
+const styles = StyleSheet.create({});
 
 // functions
 function getRegisterInputs() {
@@ -164,7 +114,7 @@ function getRegisterInputs() {
 // keys must be the same as above
 function validationSchema() {
   const [t] = useTranslation(["login"]);
-  let min = 2;
+  let min = 8;
   return {
     email: Yup.string().email(t("incorrectEmail")).required(true),
     name: Yup.string().required(true),

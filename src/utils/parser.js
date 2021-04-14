@@ -11,13 +11,20 @@ export const userRegistrationInfo = (formData) => {
   return user;
 };
 
+export const userLoginInfo = (formData) => {
+  const user = {
+    identifier: formData.email,
+    password: formData.password,
+  };
+  return user;
+};
+
 // responses
 export const successfulLoginResponse = (response, result) => {
   return {
     status: response.status,
-    data: {},
+    data: result, // TODO: get only needed fields
   };
-  // TODO: add needed fields
 };
 
 export const failedResponse = (response, result) => {
@@ -49,6 +56,8 @@ function getErrorMessage(result) {
 
   if (error === "Auth.form.error.email.taken") {
     error = i18next.t("errors:errorEmail");
+  } else if ("Auth.form.error.email.provide" || "Auth.form.error.invalid") {
+    error = i18next.t("errors:errorLogin");
   }
   return error;
 }

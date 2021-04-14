@@ -23,5 +23,10 @@ const layoutStyle = StyleSheet.create({
     width: "100%",
     //justifyContent: "space-between",
   },
+  containerButtonsLogin: {
+    flexDirection: "column",
+    width: "100%",
+    marginTop: 25,
+  },
 });
 export default layoutStyle;

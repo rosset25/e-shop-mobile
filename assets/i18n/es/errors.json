@@ -1,5 +1,7 @@
 { 
   "errorTitle": "Error",
   "errorDefault": "¡Ops! Algo salió mal, por favor inténtalo más tarde.",
-  "errorEmail": "Este email ya está en uso."
+  "errorEmail": "Este email ya está en uso.",
+  "errorLoginEmail": "Email inválido.",
+  "errorLogin": "Email o contraseña inválido."
 }

@@ -3,12 +3,10 @@ import React, { useState } from "react";
 import {
   StyleSheet,
   View,
-  Text,
   Image,
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
-import {} from "react-native-paper";
 
 // styles
 import { layoutStyle } from "../styles";
@@ -16,9 +14,10 @@ import { layoutStyle } from "../styles";
 // other imports
 import logo from "../../assets/images/logo-title-black.png";
 import RegisterForm from "../components/Login/RegisterForm";
+import LoginForm from "../components/Login/LoginForm";
 
 export default function Login() {
-  const [showLogin, setShowLogin] = useState(false);
+  const [showLogin, setShowLogin] = useState(true);
 
   // handles
   const handleChangeForm = () => {
@@ -29,13 +28,17 @@ export default function Login() {
     <View style={layoutStyle.mainContainer}>
       <Image style={styles.logo} source={logo} />
       {/* // FIXME: not working properly in Android (React Native open bug)
+      
+      // This should be resize the forms to show the fields
+      // when the keyboard is displayed.
+
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"} 
         enabled={Platform.OS === "ios" ? true : false}
       >*/}
       {showLogin ? (
-        <Text onPress={handleChangeForm}>Form login</Text>
+        <LoginForm changeForm={handleChangeForm}></LoginForm>
       ) : (
         <RegisterForm changeForm={handleChangeForm} />
       )}
