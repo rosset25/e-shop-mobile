@@ -1,0 +1,13 @@
+{
+  "name": "name",
+  "surname": "surname",
+  "email": "email",
+  "incorrectEmail": "Incorrect email",
+  "password": "password",
+  "confirmPassword": "confirm password",
+  "minCharacters": "Must be more than {{count}} characters",
+  "equalPassword": "Passwords must be equals",
+  "register": "Register",
+  "initSession": "Init session",
+  "login": "Login"
+}

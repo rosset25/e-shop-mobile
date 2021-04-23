@@ -1,0 +1,7 @@
+{ 
+  "errorTitle": "Error",
+  "errorDefault": "Something went wrong. Try again later.",
+  "errorEmail": "This email already exists.",
+  "errorLoginEmail": "Incorrect email.",
+  "errorLogin": "Incorrect email or password."
+}
