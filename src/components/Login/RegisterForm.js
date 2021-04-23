@@ -114,7 +114,7 @@ function getRegisterInputs() {
 // keys must be the same as above
 function validationSchema() {
   const [t] = useTranslation(["login"]);
-  let min = 8;
+  let min = 2; //TODO: change to 8
   return {
     email: Yup.string().email(t("incorrectEmail")).required(true),
     name: Yup.string().required(true),

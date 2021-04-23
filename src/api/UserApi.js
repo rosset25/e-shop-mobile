@@ -8,8 +8,7 @@ import {
 } from "../utils/parser";
 
 export async function registerUser(formData) {
-  //http://192.168.1.37:1337   ${API_URL}
-  const url = `http://192.168.1.37:1337/auth/local/register`;
+  const url = `${API_URL}/auth/local/register`;
   const parsedData = userRegistrationInfo(formData);
 
   try {
@@ -27,7 +26,7 @@ export async function registerUser(formData) {
 }
 
 export async function loginUser(formData) {
-  const url = `http://192.168.1.37:1337/auth/local`;
+  const url = `${API_URL}/auth/local`;
   const parsedData = userLoginInfo(formData);
 
   try {

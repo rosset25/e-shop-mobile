@@ -1,5 +1,7 @@
 import i18next from "i18next";
 
+//TODO: Refactor
+
 // requests
 export const userRegistrationInfo = (formData) => {
   const user = {
